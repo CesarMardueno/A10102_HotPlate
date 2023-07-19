@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "HotPlate_TempControl-rescue")(type "Legacy")(uri "${KIPRJMOD}/HotPlate_TempControl-rescue.lib")(options "")(descr ""))
+)
