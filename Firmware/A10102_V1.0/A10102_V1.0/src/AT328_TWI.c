@@ -40,30 +40,53 @@ bool TWI_start_condition(){
 	return true;
 }
 
-bool TWI_stop_condition(){
-	TWCR = ((1<<TWINT)|(1<<TWSTO)|(1<<TWEN));
-	
-	//	0000 0000
-	//	1<<3
-	//	0000 1000
-	//	3<<3
-	//	0001 1000
-	//  1<<7
-	//	1000 0000
-	
-	
+bool TWI_restart_condition(){
+	TWCR = ((1<<TWINT)|(1<<TWSTA)|(1<<TWEN));
+	while(!(TWSR & (1<<TWINT)));
+	if((TWSR & 0xF8)!=TWI_RESTART){
+		return false;
+	}
+	return true;
 }
 
-uint8_t TWI_write_address(uint8_t address, uint8_t w_r){
-	address = (address << 1);	//Recorro un bit a la izquierda la adress
+void TWI_stop_condition(){
+	TWCR = ((1<<TWINT)|(1<<TWSTO)|(1<<TWEN));
+		
+}
+
+bool TWI_write_address(uint8_t address, uint8_t w_r){
+	uint8_t wrt_rd = 0;
+	address = (address << 1);	//go through the memory address 1 bit to be able to write the action
 	if(TWI_R == w_r){
 		address |=  TWI_R;		//Relleno address con Write 
+		wrt_rd = TWI_RD_SLA_ACK;
 	}
-	TWAR = adress;
-	
+	else{
+		address |= TWI_W;
+		wrt_rd = TWI_WT_SLA_ACK;
+	}
+	TWDR = address;
+	TWCR = ((1<<TWINT) | (1<<TWEN));
+	if ((TWSR & 0xF8)!=wrt_rd)
+	{
+		return false;
+	}
+	return true;
 }
-uint8_t TWI_write_data(uint8_t data){
+bool TWI_write_data(uint8_t data){
+	TWDR = data;
+	TWCR = ((1<<TWINT)  | (1<<TWEN));
+	while(!(TWCR & (1<<TWINT)));
 	
-	while(TWSR != TWI_WT_SLA_ACK);
+	if((TWSR & 0xF8) != TWI_MT_DATA_ACK){
+		return false;
+	}
+	return true;
+}
+
+uint8_t TWI_read_data(uint8_t ack_nack){
+	TWCR = ((1<<TWINT) | (1<<TWEN) | (ack_nack<<TWEA));
+	while(!(TWCR & (1<<TWINT)));
+	return TWDR;
 }
 

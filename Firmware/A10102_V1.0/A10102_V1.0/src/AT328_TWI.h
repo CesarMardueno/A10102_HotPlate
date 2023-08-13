@@ -20,16 +20,18 @@
 	
 	#define TWI_START		0x08U
 	#define TWI_RESTART		0x10U
-	#define TWI_WT_SLA_ACK	0x18U	//code for ack received
-	#define TWI_MT_DATA_ACK	0x20U	//code for ack not received	
-	#define TWI_RD_SLA_ACK	0x40U
+	#define TWI_WT_SLA_ACK	0x18U	//code for write ack received
+	#define TWI_MT_DATA_ACK	0x20U	//code for master data ack not received	
+	#define TWI_RD_SLA_ACK	0x40U	//code for read ack recived
 	
 
 	void TWI_init(uint32_t sclFreq);
 	bool TWI_start_conditionn();
-	bool TWI_stop_condition();
-	uint8_t TWI_write_address(uint8_t address, uint8_t w_r);
-	uint8_t TWI_write_data(uint8_t data);
+	bool TWI_restart_condition();
+	void TWI_stop_condition();
+	bool TWI_write_address(uint8_t address, uint8_t w_r);
+	bool TWI_write_data(uint8_t data);
+	uint8_t TWI_read_data(uint8_t ack_nack);
 
 
 #endif /* AT328_TWI_H_ */

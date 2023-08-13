@@ -15,20 +15,30 @@ Discarded input sections
  .text          0x00000000        0x0 src/AT328_TWI.o
  .data          0x00000000        0x0 src/AT328_TWI.o
  .bss           0x00000000        0x0 src/AT328_TWI.o
- .text.TWI_Init
+ .text.TWI_init
                 0x00000000       0x34 src/AT328_TWI.o
- .text.twiStarCondition
+ .text.TWI_start_condition
                 0x00000000       0x20 src/AT328_TWI.o
- .debug_info    0x00000000       0xcd src/AT328_TWI.o
- .debug_abbrev  0x00000000       0x87 src/AT328_TWI.o
- .debug_loc     0x00000000       0x42 src/AT328_TWI.o
+ .text.TWI_restart_condition
+                0x00000000       0x20 src/AT328_TWI.o
+ .text.TWI_stop_condition
+                0x00000000        0x8 src/AT328_TWI.o
+ .text.TWI_write_address
+                0x00000000       0x30 src/AT328_TWI.o
+ .text.TWI_write_data
+                0x00000000       0x24 src/AT328_TWI.o
+ .text.TWI_read_data
+                0x00000000       0x1c src/AT328_TWI.o
+ .debug_info    0x00000000      0x19d src/AT328_TWI.o
+ .debug_abbrev  0x00000000       0xf1 src/AT328_TWI.o
+ .debug_loc     0x00000000       0xf2 src/AT328_TWI.o
  .debug_aranges
-                0x00000000       0x28 src/AT328_TWI.o
- .debug_ranges  0x00000000       0x18 src/AT328_TWI.o
- .debug_line    0x00000000       0xf8 src/AT328_TWI.o
- .debug_str     0x00000000      0x1ce src/AT328_TWI.o
+                0x00000000       0x50 src/AT328_TWI.o
+ .debug_ranges  0x00000000       0x40 src/AT328_TWI.o
+ .debug_line    0x00000000      0x204 src/AT328_TWI.o
+ .debug_str     0x00000000      0x246 src/AT328_TWI.o
  .comment       0x00000000       0x31 src/AT328_TWI.o
- .debug_frame   0x00000000       0x34 src/AT328_TWI.o
+ .debug_frame   0x00000000       0x84 src/AT328_TWI.o
  .text          0x00000000        0x0 src/PCF8574.o
  .data          0x00000000        0x0 src/PCF8574.o
  .bss           0x00000000        0x0 src/PCF8574.o
