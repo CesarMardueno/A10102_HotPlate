@@ -6,17 +6,20 @@
 */
 
 #include <avr/io.h>
+#include <util/delay.h>
 #include "AT328_TWI.h"
 
 void Enciende_led();
 void Apaga_led();
 
 int main(void)
-{
-	
+{	DDRB |= (1 << PORTB5);
 	while (1)
 	{
-
+		PORTB |= (1 << PORTB5);
+		_delay_ms(250);
+		PORTB &= ~(1 << PORTB5);
+		_delay_ms(250);
 	}
 
 }

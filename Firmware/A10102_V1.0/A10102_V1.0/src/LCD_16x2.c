@@ -7,12 +7,14 @@
 
 #include "LCD_16X2.h"
 
+
+
 static void configLCDPorts(void)
 {
-	/* configure the microprocessor pins for the data lines */
+	/* Configure the microprocessor pins for the data lines */
 	LCD_Data_DDR |= (1<<LCD_D7_Bit) | (1<<LCD_D6_Bit) | (1<<LCD_D5_Bit) | (1<<LCD_D4_Bit);
 	
-	/* configure the microprocessor pins for the control lines */
+	/* Configure the microprocessor pins for the control lines */
 	LCD_Ctlr_DDR |= (1<<LCD_RW) | (1<<LCD_RS) | (1<<LCD_ENE);
 	
 	/* Turn on LCD */

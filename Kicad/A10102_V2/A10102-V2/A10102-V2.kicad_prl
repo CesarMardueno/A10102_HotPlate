@@ -65,10 +65,10 @@
       40
     ],
     "visible_layers": "fffffff_ffffffff",
-    "zone_display_mode": 0
+    "zone_display_mode": 1
   },
   "meta": {
-    "filename": "A10102_V2.kicad_prl",
+    "filename": "A10102-V2.kicad_prl",
     "version": 3
   },
   "project": {

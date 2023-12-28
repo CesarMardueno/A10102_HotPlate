@@ -14,7 +14,7 @@
 #include <stdbool.h>
 #include <util/delay.h>
 	
-/*		Puertos de control		*/
+/*		Control Port		*/
 #define LCD_Data_Port	PORTD
 #define LCD_Data_DDR	DDRD
 #define LCD_Ctlr_DDR	DDRD
