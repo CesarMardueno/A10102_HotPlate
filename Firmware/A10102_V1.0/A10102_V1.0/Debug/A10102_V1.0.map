@@ -66,6 +66,21 @@ Discarded input sections
  .debug_str     0x00000000      0x26d src/LCD_16x2.o
  .comment       0x00000000       0x31 src/LCD_16x2.o
  .debug_frame   0x00000000       0xc0 src/LCD_16x2.o
+ .text          0x00000000        0x0 src/LCD_16x2_TWI.o
+ .data          0x00000000        0x0 src/LCD_16x2_TWI.o
+ .bss           0x00000000        0x0 src/LCD_16x2_TWI.o
+ .text.TWI_LCD_init
+                0x00000000        0x6 src/LCD_16x2_TWI.o
+ .debug_info    0x00000000       0xc0 src/LCD_16x2_TWI.o
+ .debug_abbrev  0x00000000       0x8b src/LCD_16x2_TWI.o
+ .debug_loc     0x00000000       0x2c src/LCD_16x2_TWI.o
+ .debug_aranges
+                0x00000000       0x20 src/LCD_16x2_TWI.o
+ .debug_ranges  0x00000000       0x10 src/LCD_16x2_TWI.o
+ .debug_line    0x00000000       0xba src/LCD_16x2_TWI.o
+ .debug_str     0x00000000      0x1b6 src/LCD_16x2_TWI.o
+ .comment       0x00000000       0x31 src/LCD_16x2_TWI.o
+ .debug_frame   0x00000000       0x24 src/LCD_16x2_TWI.o
  .text          0x00000000        0x0 src/MAX6675.o
  .data          0x00000000        0x0 src/MAX6675.o
  .bss           0x00000000        0x0 src/MAX6675.o
@@ -76,12 +91,6 @@ Discarded input sections
  .debug_line    0x00000000       0x1a src/MAX6675.o
  .debug_str     0x00000000      0x18a src/MAX6675.o
  .comment       0x00000000       0x31 src/MAX6675.o
- .text          0x00000000        0x0 src/PCF8574.o
- .data          0x00000000        0x0 src/PCF8574.o
- .bss           0x00000000        0x0 src/PCF8574.o
- .debug_line    0x00000000        0x0 src/PCF8574.o
- .debug_str     0x00000000      0x123 src/PCF8574.o
- .comment       0x00000000       0x31 src/PCF8574.o
  .text          0x00000000        0x0 src/SPI.o
  .data          0x00000000        0x0 src/SPI.o
  .bss           0x00000000        0x0 src/SPI.o
@@ -153,8 +162,8 @@ LOAD C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/
 LOAD main.o
 LOAD src/AT328_TWI.o
 LOAD src/LCD_16x2.o
+LOAD src/LCD_16x2_TWI.o
 LOAD src/MAX6675.o
-LOAD src/PCF8574.o
 LOAD src/SPI.o
 START GROUP
 LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a

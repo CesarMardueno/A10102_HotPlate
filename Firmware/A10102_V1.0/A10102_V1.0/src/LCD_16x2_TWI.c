@@ -5,6 +5,8 @@
  *  Author: Cesar M
  */ 
 
+#include "LCD_16x2_TWI.h"
+
 void TWI_LCD_init(uint32_t sclFreq)
 {
 	TWI_init(sclFreq);

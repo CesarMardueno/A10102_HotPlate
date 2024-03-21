@@ -12,7 +12,7 @@
 #include <avr/io.h>
 #include "AT328_TWI.h"
 
-
+void TWI_LCD_init(uint32_t sclFreq);
 
 
 #endif /* LCD_16X2_TWI_H_ */
