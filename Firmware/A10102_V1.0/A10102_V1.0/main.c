@@ -7,19 +7,22 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
-#include "AT328_TWI.h"
+#include "LCD_16x2.h"
 
-void Enciende_led();
-void Apaga_led();
+
 
 int main(void)
-{	DDRB |= (1 << PORTB5);
+{	
+	LCD_Init();
+	
 	while (1)
 	{
-		PORTB |= (1 << PORTB5);
-		_delay_ms(250);
-		PORTB &= ~(1 << PORTB5);
-		_delay_ms(250);
+		//LCD_Set_Cursor(1,2);
+		//LCD_Print("Hola");
+		//LCD_Set_Cursor(2,6);
+		//LCD_Write(8);
+		LCD_Write_Instruction(LCD_CLEAR);
+		//LCD_Write_Instruction(LCD_Cursor);
 	}
 
 }

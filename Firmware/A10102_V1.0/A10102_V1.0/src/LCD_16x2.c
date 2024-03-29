@@ -9,81 +9,81 @@
 
 
 
-static void configLCDPorts(void)
+void configLCDPorts(void)
 {
 	/* Configure the microprocessor pins for the data lines */
-	LCD_Data_DDR |= (1<<LCD_D7_Bit) | (1<<LCD_D6_Bit) | (1<<LCD_D5_Bit) | (1<<LCD_D4_Bit);
+	LCD_DDR |= (1 << LCD_D7) | (1 << LCD_D6) | (1 << LCD_D5) | (1 << LCD_D4);
 	
 	/* Configure the microprocessor pins for the control lines */
-	LCD_Ctlr_DDR |= (1<<LCD_RW) | (1<<LCD_RS) | (1<<LCD_ENE);
-	
-	/* Turn on LCD */
-	DDRB |= (1<<LCD_ONOFF);
+	LCD_DDR |= (1 << LCD_RS) | (1 << LCD_EN) | (1 << LCD_RW);
+
 }
 
 
 void LCD_Init ()
 {
+	
 	configLCDPorts();
-	_delay_ms(50);
 	
-	LCD_Data_Port &= ~(1 << LCD_RS);
-	LCD_Data_Port |= (1 << LCD_ENE);
-	LCD_Data_Port &= ~(1 << LCD_RW);
+	LCD_PORT &= ~(1 << LCD_RS);
+	LCD_PORT &= ~(1 << LCD_EN);
 	
-	LCD_Send_Data(LCD_Reset);
-	_delay_us(10);
-	LCD_Send_Data(LCD_Reset);
-	_delay_us(200);
-	LCD_Send_Data(LCD_Reset);
-	_delay_us(80);
-	
-	LCD_Send_Data(LCD_4BIT);
+	_delay_ms(15);
+	LCD_Send_Data(0x03);
+	_delay_ms(4.1);
+	LCD_Send_Data(0x03);
+	_delay_us(100);
+	LCD_Send_Data(0x03);
+	LCD_Send_Data(0x02);
+
 	LCD_Is_Busy();
-	
-	LCD_Write_Instruction(LCD_4BIT);
-	
+	LCD_Write_Instruction(LCD_FUNCTION_SET | LCD_4BITS | LCD_2LINES | LCD_5X8DOTS);
+
 	LCD_Is_Busy();
-	LCD_Write_Instruction(LCD_OFF);
+	LCD_Write_Instruction(LCD_DISPLAY_CONTROL | LCD_DISPLAY_ON | LCD_CURSOR_ON | LCD_BLINK_ON);
 	
 	LCD_Is_Busy();
-	LCD_Write_Instruction(LCD_CLR);
+	LCD_Write_Instruction(LCD_CLEAR);
 	
-	LCD_Is_Busy();
-	LCD_Write_Instruction(LCD_ROAM_CURSOR);
-	
-	LCD_Is_Busy();
-	LCD_Write_Instruction(LCD_ON);
+	//LCD_Is_Busy();
+	//LCD_Write_Instruction(LCD_ROAM_CURSOR);
 		
 }
-void LCD_Write (uint8_t data[])
+
+void LCD_Print(char *str)
 {
-	volatile int i = 0;
-	while(data[i] != 0)
+	while (*str)
 	{
-		LCD_Is_Busy();
-		LCD_Parser(data[i]);
-		i++;
+		LCD_Write(*str);
+		str++;
 	}
+}
+
+void LCD_Write (uint8_t data)
+{
+	//LCD_Is_Busy();
+	LCD_Parser(data);
+}
+
+void LCD_Write_Instruction(uint8_t data)
+{
+	//LCD_Is_Busy();
+	LCD_PORT &= ~(1 << LCD_RS);
+	LCD_PORT &= ~(1 << LCD_EN);
+	LCD_Send_Data(4 >> data);
+	LCD_Send_Data(data & 0x0F);
+	
 }
 
 void LCD_Parser (uint8_t data)
 {	
-	LCD_Data_Port &= ~(1 >> LCD_RW);
-	LCD_Data_Port |= (1 << LCD_RS);
-	LCD_Data_Port &= ~(1 << LCD_ENE);
-	LCD_Write(data);
-	LCD_Write(4 << data);
+	LCD_PORT |= (1 << LCD_RS);
+	LCD_PORT &= ~(1 << LCD_EN);
+	LCD_Send_Data(4 >> data);
+	LCD_Send_Data(data & 0x0F);
+	
 }
 
-LCD_Write_Instruction(uint8_t data)
-{
-	LCD_Data_Port &= ~(1 >> LCD_RW);
-	LCD_Data_Port &= ~(1 << LCD_RS);
-	LCD_Data_Port &= ~(1 << LCD_ENE);
-	LCD_Write(data);
-	LCD_Write(4 << data);
-}
 
 void LCD_Send_Data (uint8_t data)
 {
@@ -96,43 +96,50 @@ void LCD_Send_Data (uint8_t data)
 		}
 	}
 	
-	LCD_Data_Port &= ~((1 << LCD_D7_Bit) | (1 << LCD_D6_Bit) | (1 << LCD_D5_Bit) | (1 << LCD_D4_Bit));
-	LCD_Data_Port |= ((mask[0] << LCD_D7_Bit) | (mask[1] << LCD_D6_Bit) | (mask[2] << LCD_D5_Bit) | (mask[3] << LCD_D4_Bit));
+	LCD_PORT &= ~((1 << LCD_D7) | (1 << LCD_D6) | (1 << LCD_D5) | (1 << LCD_D4));
+	LCD_PORT |= ((mask[3] << LCD_D7) | (mask[2] << LCD_D6) | (mask[1] << LCD_D5) | (mask[0] << LCD_D4));
 	
-	LCD_Data_Port |= (1 << LCD_ENE);
-	_delay_us(1);
-	LCD_Data_Port &= ~(1 << LCD_ENE);
-	_delay_us(1);
+	LCD_PORT |= (1 << LCD_EN);
+	_delay_us(400);
+	LCD_PORT &= ~(1 << LCD_EN);
+	_delay_us(400);
 	
 		
 }
 
-bool LCD_Is_Busy ()
+void LCD_Is_Busy ()
 {
 	bool busy_flag; 
 	
-	LCD_Data_DDR &= ~(1 << LCD_D7_Bit);
-	LCD_Data_Port &= ~(1 << LCD_RS);
-	LCD_Data_Port |= (1 << LCD_RW);
+	LCD_DDR &= ~(1 << LCD_D7);
+	LCD_PORT &= ~(1 << LCD_RS);
+	LCD_PORT |= (1 << LCD_RW);
+	
 	
 	do 
 	{
 		busy_flag = false;
-		LCD_Data_Port |= (1 << LCD_ENE);
+		LCD_PORT |= (1 << LCD_EN);
 		_delay_us(1);
 		
-		busy_flag |= (LCD_D7_Pin & (1 << LCD_D7_Bit));
+		busy_flag |= (LCD_D7_Pin & (1 << LCD_D7));
 		
-		LCD_Data_Port &= ~(1 << LCD_ENE);
+		LCD_PORT &= ~(1 << LCD_EN);
 		_delay_us(1);
 		
-		LCD_Data_Port |= (1 << LCD_ENE);
+		LCD_PORT |= (1 << LCD_EN);
 		_delay_us(1);
-		LCD_Data_Port &= ~(1 << LCD_ENE);
+		LCD_PORT &= ~(1 << LCD_EN);
 		_delay_us(1);
 		
 	} while (busy_flag);
 	
-	LCD_Data_Port &= ~(1 << LCD_RW);
-	LCD_Data_DDR |= (1 << LCD_D7_Bit);
+	LCD_PORT &= ~(1 << LCD_RW);
+	LCD_DDR |= (1 << LCD_D7);
+}
+
+void LCD_Set_Cursor(uint8_t Row, uint8_t Col)
+{
+	static uint8_t local_mem [2] = {0x00, 0x40};
+		LCD_Write_Instruction( LCD_SET_DDRAM | (local_mem[Row - 1] + (Col - 1)));		
 }

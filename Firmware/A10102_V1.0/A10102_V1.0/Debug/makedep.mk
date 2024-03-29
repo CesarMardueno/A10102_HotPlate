@@ -12,5 +12,7 @@ src\LCD_16x2_TWI.c
 
 src\MAX6675.c
 
+src\PCF8574.c
+
 src\SPI.c
 

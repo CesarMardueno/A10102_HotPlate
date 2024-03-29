@@ -149,6 +149,12 @@
     <Compile Include="src\MAX6675.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\PCF8574.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\PCF8574.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\SPI.c">
       <SubType>compile</SubType>
     </Compile>
