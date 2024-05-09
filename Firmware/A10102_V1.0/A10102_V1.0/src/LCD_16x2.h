@@ -13,23 +13,27 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <util/delay.h>
+#include <stdarg.h>
 	
 	
 /*				Pin Mapping					*/
-#if (!defined LCD_DDR || !defined LCD_PORT)
-#warning "Pines por defecto"
+//#if (!defined LCD_DDR || !defined LCD_PORT)
+//#warning "Pines por defecto"
 #define LCD_DDR DDRD	
 #define LCD_PORT PORTD
-#define LCD_RW 0x01
-#define LCD_RS 0x02
-#define LCD_EN 0x03
-#define LCD_D4 0x04
-#define LCD_D5 0x05
-#define LCD_D6 0x06
-#define LCD_D7 0x07
+#define LCD_RW 1
+#define LCD_RS 2
+#define LCD_EN 3
+#define LCD_D4 4
+#define LCD_D5 5
+#define LCD_D6 6
+#define LCD_D7 7
 #define LCD_D7_Pin	PIND
 
-#endif
+//#endif
+
+#define N_Colum 16
+#define N_Row	2
 	
 /*				LCD Commands				*/
 /************************************************************************/
@@ -73,7 +77,7 @@
 #define LCD_CURSOR_ON		0x02
 #define LCD_CURSOR_OFF		0x00
 #define LCD_BLINK_ON		0x01
-#define LCD_BLINK_Off		0x00
+#define LCD_BLINK_OFF		0x00
 
 /************************************************************************/
 /*      Cursor or Display shift Mode   D7 D6 D5 D4 D3  D2  D1 D0        */
@@ -119,7 +123,6 @@
 #define LCD_SET_DDRAM		0x80
 
 
-#define LCD_ROAM_CURSOR		0x06
 
 void configLCDPorts(void);
 	
@@ -131,12 +134,14 @@ void LCD_Send_Data (uint8_t data);
 
 void LCD_Write_Instruction(uint8_t data);
 
-void LCD_Write (uint8_t data);
-
 void LCD_Is_Busy ();
 
 void LCD_Set_Cursor(uint8_t Row, uint8_t Col);
 
 void LCD_Print(char *str);
+
+void LCD_Printf(char *str, ...);
+
+
 
 #endif /* LCD_16X2_H_ */

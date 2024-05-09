@@ -14,15 +14,14 @@
 int main(void)
 {	
 	LCD_Init();
+	//LCD_Write_Instruction(LCD_DISPLAY_CONTROL | LCD_CURSOR_OFF | LCD_BLINK_OFF);
 	
 	while (1)
 	{
-		//LCD_Set_Cursor(1,2);
-		//LCD_Print("Hola");
-		//LCD_Set_Cursor(2,6);
-		//LCD_Write(8);
-		LCD_Write_Instruction(LCD_CLEAR);
-		//LCD_Write_Instruction(LCD_Cursor);
+		int l = 8;
+		LCD_Set_Cursor(1,1);
+		LCD_Printf("El numero es: %02d", l);
+		
 	}
 
 }

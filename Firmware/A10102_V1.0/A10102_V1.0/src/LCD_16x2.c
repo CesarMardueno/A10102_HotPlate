@@ -7,104 +7,113 @@
 
 #include "LCD_16X2.h"
 
-
+static char lcd_buffer [N_Colum + 1];
 
 void configLCDPorts(void)
 {
+	
 	/* Configure the microprocessor pins for the data lines */
-	LCD_DDR |= (1 << LCD_D7) | (1 << LCD_D6) | (1 << LCD_D5) | (1 << LCD_D4);
+	LCD_DDR |= ((1 << LCD_D7) | (1 << LCD_D6) | (1 << LCD_D5) | (1 << LCD_D4));
 	
 	/* Configure the microprocessor pins for the control lines */
-	LCD_DDR |= (1 << LCD_RS) | (1 << LCD_EN) | (1 << LCD_RW);
-
+	LCD_DDR |= ((1 << LCD_RS) | (1 << LCD_EN) | (1 << LCD_RW));
+	
+	LCD_PORT &= ~((1 << LCD_D7) | (1 << LCD_D6) | (1 << LCD_D5) | (1 << LCD_D4));
 }
 
 
 void LCD_Init ()
 {
-	
+	_delay_ms(50);
 	configLCDPorts();
 	
 	LCD_PORT &= ~(1 << LCD_RS);
 	LCD_PORT &= ~(1 << LCD_EN);
+	LCD_PORT &= ~(1 << LCD_RW);
 	
-	_delay_ms(15);
 	LCD_Send_Data(0x03);
-	_delay_ms(4.1);
+	_delay_us(4500);
 	LCD_Send_Data(0x03);
-	_delay_us(100);
+	_delay_us(4500);
 	LCD_Send_Data(0x03);
+	_delay_us(150);
 	LCD_Send_Data(0x02);
-
-	LCD_Is_Busy();
-	LCD_Write_Instruction(LCD_FUNCTION_SET | LCD_4BITS | LCD_2LINES | LCD_5X8DOTS);
-
-	LCD_Is_Busy();
+	LCD_Write_Instruction(LCD_FUNCTION_SET | LCD_4BITS);
+	LCD_Write_Instruction(LCD_FUNCTION_SET | LCD_2LINES | LCD_5X8DOTS);
 	LCD_Write_Instruction(LCD_DISPLAY_CONTROL | LCD_DISPLAY_ON | LCD_CURSOR_ON | LCD_BLINK_ON);
-	
-	LCD_Is_Busy();
 	LCD_Write_Instruction(LCD_CLEAR);
-	
-	//LCD_Is_Busy();
-	//LCD_Write_Instruction(LCD_ROAM_CURSOR);
-		
+}
+
+void LCD_Printf(char *str, ...)
+{
+	va_list args;
+	va_start(args, str);
+	vsnprintf(lcd_buffer, N_Colum + 1, str, args);
+	va_end(args);
+	LCD_Print(lcd_buffer);
 }
 
 void LCD_Print(char *str)
 {
 	while (*str)
 	{
-		LCD_Write(*str);
-		str++;
+		LCD_Parser(*str++);
 	}
-}
-
-void LCD_Write (uint8_t data)
-{
-	//LCD_Is_Busy();
-	LCD_Parser(data);
 }
 
 void LCD_Write_Instruction(uint8_t data)
 {
-	//LCD_Is_Busy();
+	//_delay_ms(2);
+	LCD_Is_Busy();
 	LCD_PORT &= ~(1 << LCD_RS);
 	LCD_PORT &= ~(1 << LCD_EN);
-	LCD_Send_Data(4 >> data);
-	LCD_Send_Data(data & 0x0F);
+	LCD_Send_Data(data >> 4);
+	LCD_Send_Data(data);
+	/*LCD_Send_Data(4 >> data);
+	LCD_Send_Data(data & 0x0F);*/
 	
 }
 
 void LCD_Parser (uint8_t data)
 {	
+	//_delay_ms(2);
+	LCD_Is_Busy();
 	LCD_PORT |= (1 << LCD_RS);
 	LCD_PORT &= ~(1 << LCD_EN);
-	LCD_Send_Data(4 >> data);
-	LCD_Send_Data(data & 0x0F);
+	LCD_Send_Data(data >> 4);
+	LCD_Send_Data(data);
 	
 }
 
 
 void LCD_Send_Data (uint8_t data)
 {
-	uint8_t mask[4] = {0};
+	if ((data & 1) == 0) LCD_PORT &= ~(1 << LCD_D4);	else LCD_PORT |= (1 << LCD_D4);
+	if ((data & 2) == 0) LCD_PORT &= ~(1 << LCD_D5);	else LCD_PORT |= (1 << LCD_D5);
+	if ((data & 4) == 0) LCD_PORT &= ~(1 << LCD_D6);	else LCD_PORT |= (1 << LCD_D6);
+	if ((data & 8) == 0) LCD_PORT &= ~(1 << LCD_D7);	else LCD_PORT |= (1 << LCD_D7);
+	
+	LCD_PORT &= ~(1 << LCD_EN);
+	LCD_PORT |= (1 << LCD_EN);
+	LCD_PORT &= ~(1 << LCD_EN);
+	_delay_us(300);
+	
+	/*uint8_t mask[4] = {0};
 	for (uint8_t i = 0; i < 4; i++)
 	{
-		if (data & 1 << (7 - i))
+		if (data & (1 >> i)))
 		{
 			mask[i] = 1;
 		}
 	}
 	
 	LCD_PORT &= ~((1 << LCD_D7) | (1 << LCD_D6) | (1 << LCD_D5) | (1 << LCD_D4));
-	LCD_PORT |= ((mask[3] << LCD_D7) | (mask[2] << LCD_D6) | (mask[1] << LCD_D5) | (mask[0] << LCD_D4));
+	LCD_PORT |= ((mask[0] << LCD_D7) | (mask[1] << LCD_D6) | (mask[2] << LCD_D5) | (mask[3] << LCD_D4));
 	
 	LCD_PORT |= (1 << LCD_EN);
-	_delay_us(400);
+	_delay_us(3);
 	LCD_PORT &= ~(1 << LCD_EN);
-	_delay_us(400);
-	
-		
+	_delay_us(300);		*/
 }
 
 void LCD_Is_Busy ()
