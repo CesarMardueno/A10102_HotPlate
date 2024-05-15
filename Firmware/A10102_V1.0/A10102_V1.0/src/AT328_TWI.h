@@ -12,21 +12,22 @@
 	#include <avr/io.h>
 	#include <stdint.h>
 	#include <stdbool.h>
+	#include <util/twi.h>
 	
-	#define	TWI_W			0x00U
-	#define	TWI_R			0x01U
-	#define TWI_ACK			0x01U	//bit del registro
-	#define TWI_NACK		0x00U	// bit del registro
+	#define	TWI_W			0x00
+	#define	TWI_R			0x01
+	#define TWI_ACK			0x01	//bit del registro
+	#define TWI_NACK		0x00	// bit del registro
 	
-	#define TWI_START		0x08U
-	#define TWI_RESTART		0x10U
-	#define TWI_WT_SLA_ACK	0x18U	//code for write ack received
-	#define TWI_MT_DATA_ACK	0x20U	//code for master data ack not received	
-	#define TWI_RD_SLA_ACK	0x40U	//code for read ack recived
+	#define TWI_START		0x08
+	#define TWI_RESTART		0x10
+	#define TWI_WT_SLA_ACK	0x18	//code for write ack received
+	#define TWI_MT_DATA_ACK	0x28	//code for master data ack not received	
+	#define TWI_RD_SLA_ACK	0x40	//code for read ack recived
 	
 
 	void TWI_init(uint32_t sclFreq);
-	bool TWI_start_conditionn();
+	bool TWI_start_condition();
 	bool TWI_restart_condition();
 	void TWI_stop_condition();
 	bool TWI_write_address(uint8_t address, uint8_t w_r);

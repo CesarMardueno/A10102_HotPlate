@@ -27,9 +27,9 @@
 /*            1  |   1  |   1  |    0x4F    |     0x4E     |			*/
 /************************************************************************/
 
-#define Address 0x27
 
-void Send_Data();
+
+void PCF8574_Send_Data(uint8_t address, uint8_t data);
 
 
 
