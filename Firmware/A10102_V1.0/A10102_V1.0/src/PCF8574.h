@@ -14,7 +14,7 @@
 
 
 /************************************************************************/
-/*                         Address                                      */
+/*							Address                                     */
 /*																		*/
 /*           A2  |  A1  |  A0  | Read Addr  |  Write Addr  |			*/
 /*            0  |   0  |   0  |    0x41    |     0x40     |			*/
@@ -29,7 +29,9 @@
 
 
 
-void PCF8574_Send_Data(uint8_t address, uint8_t data);
+void PCF8574_Port_Output(uint8_t address, uint8_t data);
+
+uint8_t PCF8574_Port_Input(uint8_t address);
 
 
 

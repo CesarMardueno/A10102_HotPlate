@@ -98,27 +98,11 @@ void LCD_Send_Data (uint8_t data)
 	LCD_PORT &= ~(1 << LCD_EN);
 	_delay_us(300);
 	
-	/*uint8_t mask[4] = {0};
-	for (uint8_t i = 0; i < 4; i++)
-	{
-		if (data & (1 >> i)))
-		{
-			mask[i] = 1;
-		}
-	}
-	
-	LCD_PORT &= ~((1 << LCD_D7) | (1 << LCD_D6) | (1 << LCD_D5) | (1 << LCD_D4));
-	LCD_PORT |= ((mask[0] << LCD_D7) | (mask[1] << LCD_D6) | (mask[2] << LCD_D5) | (mask[3] << LCD_D4));
-	
-	LCD_PORT |= (1 << LCD_EN);
-	_delay_us(3);
-	LCD_PORT &= ~(1 << LCD_EN);
-	_delay_us(300);		*/
 }
 
 void LCD_Is_Busy ()
 {
-	bool busy_flag; 
+	bool busy_flag = false; 
 	
 	LCD_DDR &= ~(1 << LCD_D7);
 	LCD_PORT &= ~(1 << LCD_RS);
@@ -127,11 +111,10 @@ void LCD_Is_Busy ()
 	
 	do 
 	{
-		busy_flag = false;
 		LCD_PORT |= (1 << LCD_EN);
 		_delay_us(1);
 		
-		busy_flag |= (LCD_D7_Pin & (1 << LCD_D7));
+		busy_flag = (LCD_D7_Pin & (1 << LCD_D7));
 		
 		LCD_PORT &= ~(1 << LCD_EN);
 		_delay_us(1);
