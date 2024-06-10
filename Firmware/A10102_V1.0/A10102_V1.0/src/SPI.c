@@ -7,29 +7,46 @@
 
 #include "SPI.h"
 
-void SPI_Master_Init(uint8_t Port0, uint8_t SS0, uint8_t MOSI0, uint8_t MISO0, uint8_t SCK0)
+void SPI_Master_Init()
 {
 	//SS0, MOSI and SCK made as output
-	Port0 |= (1 << SS0) | (1 << MOSI0) | (1 << SCK0);
-	//Eneable SPI Comunication, Master mode, and Clock Frecuency 
+	SPI_DDR |=  (1 << SPI_SCK) | (1 << SPI_MOSI);
+	SPI_DDR &= ~(1 << SPI_MISO);
+			
+	SPCR &= ~(1 << DORD);
+	SPCR &= ~(1 << CPOL);
+	SPCR &= ~(1 << CPHA);
+	
+	//Enable SPI Communication, Master mode, and Clock Frequency 
 	SPCR |= (1 << SPE) | (1 << MSTR) | ( 1<< SPR0);
-	//Eneable finish transfer Interrupt
-	SPCR |= (1 << SPIE);
+	SPCR &=  ~( 1<< SPR1);
+	SPCR &= ~(1<< SPI2X);
+	
+	//Enable finish transfer Interrupt
+	//SPCR |= (1 << SPIE);
 }
 
-void SPI_Master_Transmitter(uint8_t Port0, uint8_t SS0, uint8_t Data)
+void SPI_Master_Transmitter(uint8_t Data)
 {
-	Port0 &= ~(1 << SS0);
+	
 	SPDR = Data;
-	while(!(SPDR & (1 << SPIF)));
-	Port0 |= (1 << SS0);
+	while(!(SPSR & (1 << SPIF)));
+	
 }
 
-uint16_t SPI_Master_Receiver(uint8_t Port0, uint8_t SS0, uint8_t Data)
+uint8_t SPI_Master_Receiver()
 {
-	Port0 &= ~(1 << SS0);
-	Data = SPDR;
-	while(!(SPDR & (1 << SPIF)));
-	Port0 |= (1 << SS0);
-	return Data;
+	//SPDR = 0xFF;
+	while(!(SPSR & (1 << SPIF)));
+	return SPDR;
+}
+
+void SPI_Slave_ON(uint8_t spi_ss)
+{
+	SPI_PORT &= ~(1 << spi_ss);
+}
+
+void SPI_Slave_OFF(uint8_t spi_ss)
+{
+	SPI_PORT |= (1 << spi_ss);
 }

@@ -8,6 +8,7 @@
 #include "LCD_16x2_TWI.h"
 
 uint8_t port = Display_On;
+static char lcd_buffer [N_Colum + 1];
 
 void TWI_LCD_init(uint32_t sclFreq)
 {
@@ -34,7 +35,11 @@ void TWI_LCD_init(uint32_t sclFreq)
 
 void TWI_LCD_Printf(char *str, ...)
 {
-
+	va_list args;
+	va_start(args, str);
+	vsnprintf(lcd_buffer, N_Colum + 1, str, args);
+	va_end(args);
+	TWI_LCD_Print(lcd_buffer);
 }
 
 void TWI_LCD_Print(char *str)
@@ -48,7 +53,7 @@ void TWI_LCD_Print(char *str)
 void TWI_LCD_Command (uint8_t data)
 {
 	//TWI_LCD_Is_Busy();
-	_delay_ms(200);
+	_delay_ms(15);
 	port &= ~TWI_LCD_RS;
 	port &= ~TWI_LCD_EN;
 	TWI_LCD_Send_data(port);
@@ -59,7 +64,7 @@ void TWI_LCD_Command (uint8_t data)
 void TWI_LCD_Parser (uint8_t data)
 {
 	//TWI_LCD_Is_Busy();
-	_delay_ms(100);
+	_delay_ms(15);
 	port |= TWI_LCD_RS;
 	port &= ~TWI_LCD_EN;
 	TWI_LCD_Send_data(port);
@@ -130,5 +135,6 @@ void TWI_LCD_Is_Busy ()
 
 void TWI_LCD_Set_Cursor(uint8_t Row, uint8_t Col)
 {
-
+	static uint8_t local_mem [2] = {0x00, 0x40};
+	TWI_LCD_Command( LCD_SET_DDRAM | (local_mem[Row - 1] + (Col - 1)));
 }

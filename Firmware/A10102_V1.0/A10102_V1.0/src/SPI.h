@@ -11,9 +11,17 @@
 
 #include <avr/io.h>
 
-void SPI_Master_Init(uint8_t Port, uint8_t SS0, uint8_t MOSI0, uint8_t MISO0, uint8_t SCK0);
-void SPI_Master_Transmitter(uint8_t Port0, uint8_t SS0, uint8_t Data);
-uint16_t SPI_Master_Receiver(uint8_t Port0, uint8_t SS0, uint8_t Data);
+#define SPI_DDR DDRB
+#define SPI_PORT PORTB
+#define SPI_MOSI		4
+#define SPI_MISO		5
+#define SPI_SCK			6	
+
+void SPI_Master_Init();
+void SPI_Master_Transmitter(uint8_t Data);
+uint8_t SPI_Master_Receiver();
+void SPI_Slave_ON(uint8_t spi_ss);
+void SPI_Slave_OFF(uint8_t spi_ss);
 
 
 #endif /* SPI_H_ */

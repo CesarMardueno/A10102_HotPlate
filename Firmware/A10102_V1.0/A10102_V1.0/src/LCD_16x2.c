@@ -135,3 +135,26 @@ void LCD_Set_Cursor(uint8_t Row, uint8_t Col)
 	static uint8_t local_mem [2] = {0x00, 0x40};
 		LCD_Write_Instruction( LCD_SET_DDRAM | (local_mem[Row - 1] + (Col - 1)));		
 }
+
+
+/************************************************************************/
+/*							Example code                                */
+/************************************************************************/
+/*
+int main(void)
+{	
+
+	LCD_Init();
+	//LCD_Write_Instruction(LCD_DISPLAY_CONTROL | LCD_CURSOR_OFF | LCD_BLINK_OFF);
+
+	
+	while (1)
+	{
+		int l = 8;
+		LCD_Set_Cursor(1,1);
+		LCD_Printf("El numero es: %02d", l);
+		
+				
+	}
+
+}*/
