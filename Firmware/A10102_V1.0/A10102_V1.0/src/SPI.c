@@ -19,11 +19,11 @@ void SPI_Master_Init()
 	
 	//Enable SPI Communication, Master mode, and Clock Frequency 
 	SPCR |= (1 << SPE) | (1 << MSTR) | ( 1<< SPR0);
-	SPCR &=  ~( 1<< SPR1);
+	SPCR &= ~( 1<< SPR1);
 	SPCR &= ~(1<< SPI2X);
 	
 	//Enable finish transfer Interrupt
-	//SPCR |= (1 << SPIE);
+	SPCR |= (1 << SPE);
 }
 
 void SPI_Master_Transmitter(uint8_t Data)
@@ -34,9 +34,9 @@ void SPI_Master_Transmitter(uint8_t Data)
 	
 }
 
-uint8_t SPI_Master_Receiver()
+float SPI_Master_Receiver()
 {
-	//SPDR = 0xFF;
+	SPDR = 0xff;
 	while(!(SPSR & (1 << SPIF)));
 	return SPDR;
 }

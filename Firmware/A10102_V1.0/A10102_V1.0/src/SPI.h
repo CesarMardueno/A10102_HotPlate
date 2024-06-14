@@ -13,13 +13,13 @@
 
 #define SPI_DDR DDRB
 #define SPI_PORT PORTB
-#define SPI_MOSI		4
-#define SPI_MISO		5
-#define SPI_SCK			6	
+#define SPI_MOSI		3
+#define SPI_MISO		4
+#define SPI_SCK			5	
 
 void SPI_Master_Init();
 void SPI_Master_Transmitter(uint8_t Data);
-uint8_t SPI_Master_Receiver();
+float SPI_Master_Receiver();
 void SPI_Slave_ON(uint8_t spi_ss);
 void SPI_Slave_OFF(uint8_t spi_ss);
 

@@ -14,6 +14,6 @@
 
 #include "SPI.h"
 
-uint16_t Temperature_Read(uint8_t spi_read, uint8_t spi_slave);
+float Temperature_Read(uint8_t spi_read, uint8_t spi_slave);
 
 #endif /* MAX6675_H_ */
