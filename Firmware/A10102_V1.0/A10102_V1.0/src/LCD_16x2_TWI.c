@@ -53,7 +53,7 @@ void TWI_LCD_Print(char *str)
 void TWI_LCD_Command (uint8_t data)
 {
 	//TWI_LCD_Is_Busy();
-	_delay_ms(15);
+	_delay_ms(5);
 	port &= ~TWI_LCD_RS;
 	port &= ~TWI_LCD_EN;
 	TWI_LCD_Send_data(port);
@@ -64,7 +64,7 @@ void TWI_LCD_Command (uint8_t data)
 void TWI_LCD_Parser (uint8_t data)
 {
 	//TWI_LCD_Is_Busy();
-	_delay_ms(15);
+	_delay_ms(5);
 	port |= TWI_LCD_RS;
 	port &= ~TWI_LCD_EN;
 	TWI_LCD_Send_data(port);

@@ -50,3 +50,9 @@ void SPI_Slave_OFF(uint8_t spi_ss)
 {
 	SPI_PORT |= (1 << spi_ss);
 }
+
+
+/*SPI_Slave_ON(Slave1);
+		uint16_t temp = SPI_Master_Receiver();
+		_delay_ms(6000);
+		SPI_Slave_OFF(Slave1);*/

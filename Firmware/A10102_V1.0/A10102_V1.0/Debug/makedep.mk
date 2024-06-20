@@ -6,6 +6,8 @@ main.c
 
 src\AT328_TWI.c
 
+src\ENCODER.c
+
 src\LCD_16x2.c
 
 src\LCD_16x2_TWI.c

@@ -10,6 +10,7 @@
 #define SPI_H_
 
 #include <avr/io.h>
+#include <stdint.h>
 
 #define SPI_DDR DDRB
 #define SPI_PORT PORTB
